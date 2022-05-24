@@ -2,12 +2,37 @@ import { View, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { Input } from '@rneui/themed';
 import { Button } from '@rneui/base';
+import { auth } from '../firebase';
 
 const RegisterScreen = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [imageURL, setImageURL] = useState('');
+
+    const register = () => {
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                var user = userCredential.user;
+                
+                user.updateProfile({
+                    displayName:name,
+                    photoURL: imageURL? imageURL:"https://example.com/jane-q-user/profile.jpg"
+                }).then(() => {
+                    // Update successful
+                    // ...
+                }).catch((error) => {
+                    // An error occurred
+                    // ...
+                }); 
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert(errorMessage);
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -41,7 +66,7 @@ const RegisterScreen = () => {
                 onChangeText={text => setImageURL(text)}
             />
 
-            <Button title="register" style={styles.button} />
+            <Button title="register" style={styles.button} onPress={register}/>
         </View>
     )
 }
