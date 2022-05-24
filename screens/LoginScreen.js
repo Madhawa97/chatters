@@ -9,6 +9,20 @@ const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const signin = () => {
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in
+                var user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                alert(errorMessage);
+            });
+    }
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
@@ -46,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
                 secureTextEntry
             />
 
-            <Button title="sign in" style={styles.button} />
+            <Button title="sign in" style={styles.button} onPress={signin} />
             <Button title="register" style={styles.button} onPress={() => navigation.navigate('Register')} />
         </View>
     )
