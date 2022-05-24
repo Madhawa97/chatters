@@ -2,14 +2,22 @@ import { View, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { Input } from '@rneui/themed';
 import { Button } from '@rneui/base';
-import { NavigationContainer } from '@react-navigation/native';
 
-const LoginScreen = ({navigation}) => {
+const RegisterScreen = () => {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [imageURL, setImageURL] = useState('');
 
     return (
         <View style={styles.container}>
+            <Input
+                placeholder='Enter your name'
+                label="Name"
+                leftIcon={{ type: 'material', name: 'badge' }}
+                value={name}
+                onChangeText={text => setName(text)}
+            />
             <Input
                 placeholder='Enter your email'
                 label="Email"
@@ -25,14 +33,20 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={text => setPassword(text)}
                 secureTextEntry
             />
+            <Input
+                placeholder='Enter your image url'
+                label="Profile Picture"
+                leftIcon={{ type: 'material', name: 'face' }}
+                value={imageURL}
+                onChangeText={text => setImageURL(text)}
+            />
 
-            <Button title="sign in" style={styles.button} />
-            <Button title="register" style={styles.button} onPress={()=> navigation.navigate('Register')}/>
+            <Button title="register" style={styles.button} />
         </View>
     )
 }
 
-export default LoginScreen
+export default RegisterScreen;
 
 
 const styles = StyleSheet.create({
