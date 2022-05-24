@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ChatScreen from './screens/ChatScreen';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,7 @@ export default function App() {
                 <Stack.Navigator>
                     <Stack.Screen name="Login" component={LoginScreen} />
                     <Stack.Screen name="Register" component={RegisterScreen} />
+                    <Stack.Screen name="Chat" component={ChatScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>
