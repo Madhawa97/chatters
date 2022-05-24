@@ -1,12 +1,32 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from '@rneui/themed';
 import { Button } from '@rneui/base';
 import { NavigationContainer } from '@react-navigation/native';
+import { auth } from '../firebase';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                var uid = user.uid;
+                navigation.replace('Chat');
+                // ...
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
+
+        return unsubscribe
+
+    }, [])
+
 
     return (
         <View style={styles.container}>
@@ -27,7 +47,7 @@ const LoginScreen = ({navigation}) => {
             />
 
             <Button title="sign in" style={styles.button} />
-            <Button title="register" style={styles.button} onPress={()=> navigation.navigate('Register')}/>
+            <Button title="register" style={styles.button} onPress={() => navigation.navigate('Register')} />
         </View>
     )
 }
