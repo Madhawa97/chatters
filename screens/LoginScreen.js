@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
                 // ...
             } else {
                 // User is signed out
-                // ...
+                navigation.canGoBack()&&navigation.popToTop();
             }
         });
 

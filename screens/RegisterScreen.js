@@ -4,7 +4,7 @@ import { Input } from '@rneui/themed';
 import { Button } from '@rneui/base';
 import { auth } from '../firebase';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -15,17 +15,19 @@ const RegisterScreen = () => {
             .then((userCredential) => {
                 // Signed in 
                 var user = userCredential.user;
-                
+
                 user.updateProfile({
-                    displayName:name,
-                    photoURL: imageURL? imageURL:"https://example.com/jane-q-user/profile.jpg"
+                    displayName: name,
+                    photoURL: imageURL ? imageURL : "https://example.com/jane-q-user/profile.jpg"
                 }).then(() => {
                     // Update successful
                     // ...
                 }).catch((error) => {
                     // An error occurred
                     // ...
-                }); 
+                });
+                navigation.replace('Chat');
+
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -66,7 +68,7 @@ const RegisterScreen = () => {
                 onChangeText={text => setImageURL(text)}
             />
 
-            <Button title="register" style={styles.button} onPress={register}/>
+            <Button title="register" style={styles.button} onPress={register} />
         </View>
     )
 }
