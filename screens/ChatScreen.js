@@ -9,19 +9,36 @@ const ChatScreen = ({ navigation }) => {
     // gifted chat code from 'https://github.com/FaridSafi/react-native-gifted-chat#:~:text=const%20%5Bmessages%2C%20setMessages%5D%20%3D,))%0A%20%20%7D%2C%20%5B%5D)'
     const [messages, setMessages] = useState([]);
 
-    useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ])
+    //dummy data
+    //
+    // useEffect(() => {
+    //     setMessages([
+    //         {
+    //             _id: 1,
+    //             text: 'Hello developer',
+    //             createdAt: new Date(),
+    //             user: {
+    //                 _id: 2,
+    //                 name: 'React Native',
+    //                 avatar: 'https://placeimg.com/140/140/any',
+    //             },
+    //         },
+    //     ])
+    // }, [])
+
+    useLayoutEffect(() => {
+        const unsubscribe = db.collection('chats').orderBy('createdAt', 'desc').onSnapshot(
+            snapshot => setMessages(
+                snapshot.docs.map(doc => ({
+                    _id: doc.data()._id,
+                    createdAt: doc.data().createdAt.toDate(),
+                    text: doc.data().text,
+                    user: doc.data().user,
+                }))
+            )
+        )
+
+        return unsubscribe;
     }, [])
 
     const onSend = useCallback((messages = []) => {
@@ -40,7 +57,7 @@ const ChatScreen = ({ navigation }) => {
         })
     }, [])
 
-    
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
